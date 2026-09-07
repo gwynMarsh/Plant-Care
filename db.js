@@ -2,44 +2,61 @@ const recipeDb = {
   "basic_foliar": {
     name: "Basic Foliar Spray Mix",
     ingredients: [
-      { name: "Liquid Kelp (Example)", ratio: 2.0, unit: "ml" },
-      { name: "Fish Emulsion (Example)", ratio: 1.0, unit: "ml" }
+      { name: "Nicspray", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Calcium Acetate", min: 10.0, max: 10.0, unit: "ml" },
+      { name: "Wood Vinegar", min: 1.0, max: 3.0, unit: "ml" },     // Range varies by weather
+      { name: "Surfactant", min: 2.0, max: 4.0, unit: "ml" }        // Range varies by weather
     ]
   },
   "adv_foliar_1": {
-    name: "Advanced Foliar Spray (Formula 1)",
+    name: "Advanced Foliar Spray (Seaweed)",
     ingredients: [
-      { name: "Formula 1 Component A", ratio: 1.5, unit: "ml" }
+      { name: "Green Seaweed Powder", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Nicspray", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Calcium Acetate", min: 10.0, max: 10.0, unit: "ml" },
+      { name: "Surfactant", min: 2.0, max: 4.0, unit: "ml" }         // Range varies by weather
     ]
   },
   "adv_foliar_2": {
-    name: "Advanced Foliar Spray (Formula 2)",
+    name: "Advanced Foliar Spray (Energy+)",
     ingredients: [
-      { name: "Formula 2 Component A", ratio: 2.0, unit: "ml" }
+      { name: "Green Seaweed Powder", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Amino Acids", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Surfactant", min: 2.0, max: 4.0, unit: "ml" }         // Range varies by weather
     ]
   },
-  "adv_foliar_3": {
-    name: "Advanced Foliar Spray (Formula 3)",
+   "adv_foliar_3": {
+    name: "Advanced Foliar Spray (Growth+)",
     ingredients: [
-      { name: "Formula 3 Component A", ratio: 3.0, unit: "ml" }
+      { name: "Green Seaweed Powder", min: 0.5, max: 0.5, unit: g" },
+      { name: "Nicspray", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Urea", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Surfactant", min: 2.0, max: 4.0, unit: "ml" }           // Range varies by weather
     ]
   },
   "adv_foliar_4": {
-    name: "Advanced Foliar Spray (Formula 4)",
+    name: "Advanced Foliar Spray (Speedy Bloom)",
     ingredients: [
-      { name: "Formula 4 Component A", ratio: 1.0, unit: "ml" }
+      { name: "Calcium-EDTA", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Boron", min: 0.25, max: 0.25, unit: "g" },
+      { name: "Green Seaweed Powder", min: 0.5, max: 0.5, unit: "g" },
+      { name: "Surfactant", min: 2.0, max: 4.0, unit: "ml" }           // Range varies by weather
     ]
-  },
-  "bio_boost": {
-    name: "Bio-boost Water Solution",
-    ingredients: [
-      { name: "Humic Acid", ratio: 1.0, unit: "g" }
-    ]
-  },
-  "bloom_trigger": {
+	},
+	"bio_boost": {
+	name: "Bio-boost Solution",
+	ingredients: [
+	{ name: "Green Seaweed Powder", min: 1.0, max: 1.0, unit: "g" }
+	{ name: "Fe-DTPA", min: 0.5, max: 0.5, unit: "g" }
+	{ name: "Urea", min: 1.0, max: 1.0, unit: "g", optional: true }    // Optional ingredient
+	]
+	},
+	"bloom_trigger": {
     name: "Bloom Trigger Solution",
-    ingredients: [
-      { name: "PK Booster", ratio: 3.0, unit: "ml" }
-    ]
-  }
+	ingredients: [
+	{ name: "Boron", min: 0.25, max: 0.25, unit: "g" },
+	{ name: "TKPP", min: 1.0, max: 1.0, unit: "g" }
+	{ name: "Green Seaweed Powder", min: 1.0, max: 1.0, unit: "g" }
+	]
+	}
 };
