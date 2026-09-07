@@ -17,15 +17,15 @@
       --card-border: #e5e7eb;
       --input-bg: #ffffff;
       --input-border: #ccc;
-      --accent-color: #0d9488; /* Desaturated Teal */
+      --accent-color: #0d9488;
       --nav-bg: #ffffff;
       --nav-border: #e5e7eb;
       --card-inner: #f9fafb;
+      --overlay-bg: rgba(0, 0, 0, 0.4);
       
-      /* Status Colors - Cool Teals & Warm Ambers */
       --status-good: #0d9488; 
       --status-due: #d97706;  
-      --status-overdue: #b45309; 
+      --status-overdue: #92400e; 
     }
 
     body.dark-mode {
@@ -35,10 +35,11 @@
       --card-border: #374151;
       --input-bg: #111827;
       --input-border: #374151;
-      --accent-color: #2dd4bf; /* Bright Desaturated Teal */
+      --accent-color: #2dd4bf;
       --nav-bg: #111827;
       --nav-border: #1f2937;
       --card-inner: #111827;
+      --overlay-bg: rgba(0, 0, 0, 0.7);
     }
 
     * { box-sizing: border-box; }
@@ -106,11 +107,7 @@
       transition: opacity 0.2s ease, color 0.2s ease;
     }
 
-    .nav-item.active {
-      opacity: 1;
-      color: var(--accent-color);
-    }
-
+    .nav-item.active { opacity: 1; color: var(--accent-color); }
     .nav-icon { font-size: 20px; margin-bottom: 2px; }
 
     .tab-content { display: none; }
@@ -130,7 +127,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .plant-title { font-size: 17px; font-weight: 900; }
@@ -149,6 +146,37 @@
     .badge-due { background-color: var(--status-due); }
     .badge-overdue { background-color: var(--status-overdue); }
 
+    .date-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background-color: var(--card-inner);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 12px;
+    }
+
+    .date-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .date-label { font-weight: 700; opacity: 0.8; }
+    .date-val { font-weight: 900; color: var(--accent-color); }
+    
+    .date-input-inline {
+      padding: 4px 8px;
+      font-size: 13px;
+      font-family: inherit;
+      border-radius: 6px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
     .btn {
       width: 100%;
       padding: 12px;
@@ -159,71 +187,82 @@
       font-family: inherit;
       cursor: pointer;
       transition: opacity 0.15s ease, transform 0.1s ease;
-      margin-top: 8px;
     }
 
     .btn:active { transform: scale(0.98); }
     .btn-primary { background-color: var(--accent-color); color: #ffffff; }
     .btn-secondary { background-color: var(--card-inner); color: var(--text-color); border: 1px solid var(--card-border); }
 
-    .input-group {
+    .btn-row {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 8px;
+      margin-top: 8px;
     }
 
+    .btn-half {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    .input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
     label { font-size: 12px; font-weight: 700; opacity: 0.8; }
-
     input, select, textarea {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 15px;
-      font-family: inherit;
-      border-radius: 8px;
-      border: 1.5px solid var(--input-border);
-      background-color: var(--input-bg);
-      color: var(--text-color);
-      resize: vertical;
+      width: 100%; padding: 10px 12px; font-size: 15px; font-family: inherit;
+      border-radius: 8px; border: 1.5px solid var(--input-border);
+      background-color: var(--input-bg); color: var(--text-color); resize: vertical;
     }
 
-    .calc-result {
-      background: var(--card-inner);
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 14px;
-      border: 1px solid var(--card-border);
-    }
-
-    .calc-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-      border-bottom: 1px dashed var(--card-border);
-      padding-bottom: 4px;
-    }
+    .calc-result { background: var(--card-inner); border-radius: 12px; padding: 14px; margin-top: 14px; border: 1px solid var(--card-border); }
+    .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; border-bottom: 1px dashed var(--card-border); padding-bottom: 4px; }
     .calc-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .calc-val { font-weight: 900; color: var(--accent-color); }
 
-    .log-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--card-border);
-      font-size: 13px;
-    }
+    .log-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--card-border); font-size: 13px; }
     .log-item:last-child { border-bottom: none; }
-    
-    .app-footer {
-      margin-top: 24px;
-      font-size: 11px;
-      opacity: 0.6;
-      text-align: center;
+
+    #edit-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--overlay-bg);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      backdrop-filter: blur(2px);
     }
+    
+    .app-footer { margin-top: 24px; font-size: 11px; opacity: 0.6; text-align: center; }
   </style>
 </head>
 <body>
+
+  <!-- MODAL: Edit Plant -->
+  <div id="edit-modal">
+    <div class="card" style="width: 100%; max-width: 360px; margin: 0;">
+      <div style="font-weight: 900; margin-bottom: 12px;">Edit Plant Settings</div>
+      <div class="input-group">
+        <input type="hidden" id="edit-id">
+        <div>
+          <label>Plant Name</label>
+          <input type="text" id="edit-name">
+        </div>
+        <div>
+          <label>Fertilizer Assignment</label>
+          <select id="edit-type"></select>
+        </div>
+        <div>
+          <label>Fertilize Every (Days)</label>
+          <input type="number" id="edit-interval" min="1">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary btn-half" onclick="closeEditModal()">Cancel</button>
+        <button class="btn btn-primary btn-half" onclick="saveEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
 
   <div class="header-row">
     <h2 id="page-title">Fertilizer Schedule</h2>
@@ -239,7 +278,7 @@
       <div class="input-group">
         <div>
           <label>Plant Names (Separate by commas or new lines)</label>
-          <textarea id="bulk-names" rows="4" placeholder="e.g., Monstera, Bird's Nest Fern, Arabian Jasmine"></textarea>
+          <textarea id="bulk-names" rows="4" placeholder="e.g., Monstera, Bird's Nest Fern"></textarea>
         </div>
         <div>
           <label>Fertilizer Assignment</label>
@@ -248,6 +287,10 @@
         <div>
           <label>Fertilize Every (Days)</label>
           <input type="number" id="bulk-interval" value="14" min="1">
+        </div>
+        <div>
+          <label>Last Fertilized Date</label>
+          <input type="date" id="bulk-date">
         </div>
       </div>
       <button class="btn btn-primary" onclick="bulkSavePlants()">Save All Plants</button>
@@ -270,10 +313,7 @@
           <select id="calc-recipe" onchange="runCalculator()"></select>
         </div>
       </div>
-
-      <div class="calc-result" id="recipe-output">
-        <!-- Ingredients dynamically populate here -->
-      </div>
+      <div class="calc-result" id="recipe-output"></div>
     </div>
   </div>
 
@@ -294,75 +334,63 @@
     </div>
   </div>
 
-  <div class="app-footer">
-    © 2026 • Plant Care Tracker
-  </div>
+  <div class="app-footer">© 2026 • Plant Care Tracker</div>
 
-  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <button class="nav-item active" onclick="switchTab('schedule', 'Fertilizer Schedule')">
-      <span class="nav-icon">🪴</span>
-      <span>Schedule</span>
+      <span class="nav-icon">🪴</span><span>Schedule</span>
     </button>
     <button class="nav-item" onclick="switchTab('calculator', 'Mix Calculator')">
-      <span class="nav-icon">🧪</span>
-      <span>Calculator</span>
+      <span class="nav-icon">🧪</span><span>Calculator</span>
     </button>
     <button class="nav-item" onclick="switchTab('logs', 'Logs & Backup')">
-      <span class="nav-icon">📋</span>
-      <span>Logs</span>
+      <span class="nav-icon">📋</span><span>Logs</span>
     </button>
   </div>
 
   <script>
-    // --- DATABASE: FERTILIZER RECIPES ---
-    // Edit the "ratio" (amount per 1 Liter of water) and "unit" for your specific products.
     const recipeDb = {
       "basic_foliar": {
         name: "Basic Foliar Spray Mix",
         ingredients: [
-          { name: "Liquid Kelp", ratio: 2.0, unit: "ml" },
-          { name: "Fish Emulsion", ratio: 1.0, unit: "ml" }
+          { name: "Liquid Kelp (Example)", ratio: 2.0, unit: "ml" },
+          { name: "Fish Emulsion (Example)", ratio: 1.0, unit: "ml" }
         ]
       },
       "adv_foliar_1": {
         name: "Advanced Foliar Spray (Formula 1)",
         ingredients: [
-          { name: "Ingredient A", ratio: 1.5, unit: "ml" },
-          { name: "Ingredient B", ratio: 0.5, unit: "g" }
+          { name: "Formula 1 Component A", ratio: 1.5, unit: "ml" }
         ]
       },
       "adv_foliar_2": {
         name: "Advanced Foliar Spray (Formula 2)",
         ingredients: [
-          { name: "Ingredient C", ratio: 2.0, unit: "ml" }
+          { name: "Formula 2 Component A", ratio: 2.0, unit: "ml" }
         ]
       },
       "adv_foliar_3": {
         name: "Advanced Foliar Spray (Formula 3)",
         ingredients: [
-          { name: "Ingredient D", ratio: 3.0, unit: "ml" }
+          { name: "Formula 3 Component A", ratio: 3.0, unit: "ml" }
         ]
       },
       "adv_foliar_4": {
         name: "Advanced Foliar Spray (Formula 4)",
         ingredients: [
-          { name: "Ingredient E", ratio: 1.0, unit: "ml" },
-          { name: "Ingredient F", ratio: 0.25, unit: "g" }
+          { name: "Formula 4 Component A", ratio: 1.0, unit: "ml" }
         ]
       },
       "bio_boost": {
         name: "Bio-boost Water Solution",
         ingredients: [
-          { name: "Bio-stimulant", ratio: 5.0, unit: "ml" },
           { name: "Humic Acid", ratio: 1.0, unit: "g" }
         ]
       },
       "bloom_trigger": {
         name: "Bloom Trigger Solution",
         ingredients: [
-          { name: "PK Booster", ratio: 3.0, unit: "ml" },
-          { name: "Micronutrients", ratio: 0.5, unit: "ml" }
+          { name: "PK Booster", ratio: 3.0, unit: "ml" }
         ]
       }
     };
@@ -377,11 +405,23 @@
       localStorage.setItem('app-theme', isDark ? 'dark' : 'light');
     }
 
+    function formatDateDisplay(isoString) {
+      if (!isoString) return "Unknown";
+      const date = new Date(isoString);
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function getTodayInputFormat() {
+      const today = new Date();
+      return today.toISOString().split('T')[0];
+    }
+
     window.onload = function() {
       if (localStorage.getItem('app-theme') === 'dark') {
         document.body.classList.add('dark-mode');
         document.getElementById('theme-btn').innerText = '☀️';
       }
+      document.getElementById('bulk-date').value = getTodayInputFormat();
       
       populateDropdowns();
       loadData();
@@ -392,17 +432,12 @@
     function populateDropdowns() {
       const bulkSelect = document.getElementById('bulk-type');
       const calcSelect = document.getElementById('calc-recipe');
+      const editSelect = document.getElementById('edit-type');
       
       for (const [key, data] of Object.entries(recipeDb)) {
-        const option1 = document.createElement('option');
-        option1.value = key;
-        option1.innerText = data.name;
-        bulkSelect.appendChild(option1);
-
-        const option2 = document.createElement('option');
-        option2.value = key;
-        option2.innerText = data.name;
-        calcSelect.appendChild(option2);
+        bulkSelect.add(new Option(data.name, key));
+        calcSelect.add(new Option(data.name, key));
+        editSelect.add(new Option(data.name, key));
       }
     }
 
@@ -438,8 +473,10 @@
       const textInput = document.getElementById('bulk-names').value;
       const recipeKey = document.getElementById('bulk-type').value;
       const interval = parseInt(document.getElementById('bulk-interval').value, 10) || 14;
-
+      let dateInput = document.getElementById('bulk-date').value;
+      
       if (!textInput.trim()) return;
+      if (!dateInput) dateInput = getTodayInputFormat();
 
       const names = textInput.split(/,|\n/).map(n => n.trim()).filter(n => n.length > 0);
       const fertilizerName = recipeDb[recipeKey].name;
@@ -450,7 +487,7 @@
           name: name,
           type: fertilizerName,
           interval: interval,
-          lastFertilized: new Date().toISOString()
+          lastFertilized: dateInput
         });
       });
 
@@ -461,20 +498,79 @@
       toggleAddForm();
     }
 
+    function editFertilizerDate(id, newDate) {
+      if (!newDate) return;
+      const plant = plants.find(p => p.id === id);
+      if (plant) {
+        plant.lastFertilized = newDate;
+        saveData();
+        renderSchedule();
+      }
+    }
+
     function waterPlant(id) {
       const plant = plants.find(p => p.id === id);
       if (!plant) return;
 
-      plant.lastFertilized = new Date().toISOString();
+      const today = getTodayInputFormat();
+      plant.lastFertilized = today;
 
       logs.unshift({
         plantName: plant.name,
         type: plant.type,
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        date: formatDateDisplay(today)
       });
+
+      // Auto-Pruning: Keeps JSON file lightweight by dropping logs past 1,000 entries
+      if (logs.length > 1000) {
+        logs = logs.slice(0, 1000);
+      }
 
       saveData();
       renderSchedule();
+    }
+
+    function openEditModal(id) {
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+      
+      document.getElementById('edit-id').value = plant.id;
+      document.getElementById('edit-name').value = plant.name;
+      document.getElementById('edit-interval').value = plant.interval;
+      
+      const editSelect = document.getElementById('edit-type');
+      for (let i = 0; i < editSelect.options.length; i++) {
+        if (editSelect.options[i].text === plant.type) {
+          editSelect.selectedIndex = i;
+          break;
+        }
+      }
+      
+      document.getElementById('edit-modal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').style.display = 'none';
+    }
+
+    function saveEdit() {
+      const id = document.getElementById('edit-id').value;
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+
+      const newName = document.getElementById('edit-name').value.trim();
+      const newInterval = parseInt(document.getElementById('edit-interval').value, 10);
+      const recipeKey = document.getElementById('edit-type').value;
+
+      if (newName && newInterval > 0) {
+        plant.name = newName;
+        plant.interval = newInterval;
+        plant.type = recipeDb[recipeKey].name;
+        
+        saveData();
+        renderSchedule();
+        closeEditModal();
+      }
     }
 
     function deletePlant(id) {
@@ -493,13 +589,21 @@
         return;
       }
 
-      const now = new Date();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); 
 
       plants.forEach(plant => {
-        const last = new Date(plant.lastFertilized);
-        const diffTime = Math.abs(now - last);
+        // FAIL-SAFE: If old data lacks a date, it defaults to today so the UI never breaks.
+        const safeDate = plant.lastFertilized || getTodayInputFormat();
+        const lastDate = new Date(safeDate);
+        lastDate.setHours(0, 0, 0, 0);
+        
+        const diffTime = today - lastDate;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const daysLeft = plant.interval - diffDays;
+
+        const nextDate = new Date(lastDate);
+        nextDate.setDate(lastDate.getDate() + plant.interval);
 
         let badgeClass = 'badge-good';
         let badgeText = `${daysLeft} days left`;
@@ -522,8 +626,24 @@
             </div>
             <span class="badge ${badgeClass}">${badgeText}</span>
           </div>
-          <button class="btn btn-primary" onclick="waterPlant('${plant.id}')">Fertilized Today</button>
-          <button class="btn btn-secondary" style="margin-top: 6px; font-size: 11px; padding: 6px;" onclick="deletePlant('${plant.id}')">Delete</button>
+
+          <div class="date-grid">
+            <div class="date-row">
+              <span class="date-label">Last Fed:</span>
+              <input type="date" class="date-input-inline" value="${safeDate}" onchange="editFertilizerDate('${plant.id}', this.value)">
+            </div>
+            <div class="date-row">
+              <span class="date-label">Next Due:</span>
+              <span class="date-val">${formatDateDisplay(nextDate)}</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="waterPlant('${plant.id}')">Log Today & Reset Timer</button>
+          
+          <div class="btn-row">
+            <button class="btn btn-secondary btn-half" onclick="openEditModal('${plant.id}')">Edit Settings</button>
+            <button class="btn btn-secondary btn-half" onclick="deletePlant('${plant.id}')">Delete Plant</button>
+          </div>
         `;
         container.appendChild(card);
       });
@@ -545,9 +665,8 @@
                    </div>`;
         });
       } else {
-        html = `<div style="opacity:0.6; font-size: 14px;">No ingredients configured for this mix yet.</div>`;
+        html = `<div style="opacity:0.6; font-size: 14px;">No ingredients configured.</div>`;
       }
-      
       output.innerHTML = html;
     }
 
