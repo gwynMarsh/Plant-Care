@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Plant Care & Fertilizer Tracker</title>
+  
+  <!-- Lato Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #f4f4f7;
+      --text-color: #333333;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+      --input-bg: #ffffff;
+      --input-border: #ccc;
+      --accent-color: #DE7E00;
+      --nav-bg: #ffffff;
+      --nav-border: #e5e7eb;
+      --card-inner: #f9fafb;
+      
+      /* Status Colors */
+      --status-good: #10b981;
+      --status-due: #f59e0b;
+      --status-overdue: #ef4444;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #f3f4f6;
+      --card-bg: #1f2937;
+      --card-border: #374151;
+      --input-bg: #111827;
+      --input-border: #374151;
+      --accent-color: #FF9D2E;
+      --nav-bg: #111827;
+      --nav-border: #1f2937;
+      --card-inner: #111827;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 20px 16px 80px 16px;
+      max-width: 360px;
+      margin: 0 auto;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    h2 { margin: 0; font-size: 20px; font-weight: 900; }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 360px;
+      height: 60px;
+      background-color: var(--nav-bg);
+      border-top: 1px solid var(--nav-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      opacity: 0.5;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 0;
+      cursor: pointer;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-item.active {
+      opacity: 1;
+      color: var(--accent-color);
+    }
+
+    .nav-icon { font-size: 20px; margin-bottom: 2px; }
+
+    /* Tab Views */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Cards & Containers */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .plant-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .plant-title { font-size: 17px; font-weight: 900; }
+    .plant-type { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 12px;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .badge-good { background-color: var(--status-good); }
+    .badge-due { background-color: var(--status-due); }
+    .badge-overdue { background-color: var(--status-overdue); }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+      margin-top: 8px;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background-color: var(--accent-color); color: #ffffff; }
+    .btn-secondary { background-color: var(--card-inner); color: var(--text-color); border: 1px solid var(--card-border); }
+    .btn-danger { background-color: #ef4444; color: #ffffff; }
+
+    /* Form Fields */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    label { font-size: 12px; font-weight: 700; opacity: 0.8; }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 15px;
+      font-family: inherit;
+      border-radius: 8px;
+      border: 1.5px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    /* Calculator Result Container */
+    .calc-result {
+      background: var(--card-inner);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .calc-val { font-weight: 900; color: var(--accent-color); }
+
+    /* Logs List */
+    .log-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 13px;
+    }
+
+    .log-item:last-child { border-bottom: none; }
+    
+    .app-footer {
+      margin-top: 24px;
+      font-size: 11px;
+      opacity: 0.6;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-row">
+    <h2 id="page-title">Fertilizer Schedule</h2>
+    <button id="theme-btn" class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
+
+  <!-- TAB 1: SCHEDULE -->
+  <div id="tab-schedule" class="tab-content active">
+    <button class="btn btn-secondary" style="margin-bottom: 16px;" onclick="toggleAddForm()">+ Add New Plant</button>
+
+    <div id="add-plant-card" class="card" style="display: none;">
+      <div style="font-weight: 900; margin-bottom: 12px;">Register Plant</div>
+      <div class="input-group">
+        <div>
+          <label>Plant Name</label>
+          <input type="text" id="plant-name" placeholder="e.g. Balcony Monstera">
+        </div>
+        <div>
+          <label>Fertilizer Type</label>
+          <input type="text" id="plant-type" placeholder="e.g. NPK 16-16-16 / Foliar">
+        </div>
+        <div>
+          <label>Fertilize Every (Days)</label>
+          <input type="number" id="plant-interval" value="14" min="1">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="savePlant()">Save Plant</button>
+    </div>
+
+    <div id="plant-list"></div>
+  </div>
+
+  <!-- TAB 2: CALCULATOR -->
+  <div id="tab-calculator" class="tab-content">
+    <div class="card">
+      <div style="font-weight: 900; margin-bottom: 12px;">Solution Calculator</div>
+      <div class="input-group">
+        <div>
+          <label>Water Container Volume (Liters)</label>
+          <input type="number" id="calc-volume" value="1.5" step="0.1" oninput="runCalculator()">
+        </div>
+        <div>
+          <label>Recommended Dosage Ratio (per 1L)</label>
+          <input type="number" id="calc-ratio" value="2.0" step="0.1" oninput="runCalculator()">
+        </div>
+        <div>
+          <label>Dosage Unit</label>
+          <select id="calc-unit" onchange="runCalculator()">
+            <option value="ml">Milliliters (ml) - Liquid</option>
+            <option value="g">Grams (g) - Powder</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-result">
+        <div class="calc-row">
+          <span>Full Strength (100%):</span>
+          <span id="res-full" class="calc-val">3.0 ml</span>
+        </div>
+        <div class="calc-row">
+          <span>Half Strength (50%):</span>
+          <span id="res-half" class="calc-val">1.5 ml</span>
+        </div>
+        <div class="calc-row">
+          <span>Quarter Strength (25%):</span>
+          <span id="res-quarter" class="calc-val">0.75 ml</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: LOGS & SYNC -->
+  <div id="tab-logs" class="tab-content">
+    <div class="card">
+      <div style="font-weight: 900; margin-bottom: 12px;">iCloud Backup & Sync</div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary" onclick="exportJSON()">Export JSON</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()">Import JSON</button>
+      </div>
+      <input type="file" id="file-input" style="display: none;" accept=".json" onchange="importJSON(event)">
+    </div>
+
+    <div class="card">
+      <div style="font-weight: 900; margin-bottom: 12px;">Fertilization History</div>
+      <div id="logs-list"></div>
+    </div>
+  </div>
+
+  <div class="app-footer">
+    © 2026 • Plant Care Tracker
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('schedule', 'Fertilizer Schedule')">
+      <span class="nav-icon">🪴</span>
+      <span>Schedule</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('calculator', 'Dilution Calculator')">
+      <span class="nav-icon">🧪</span>
+      <span>Calculator</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('logs', 'Logs & Backup')">
+      <span class="nav-icon">📋</span>
+      <span>Logs</span>
+    </button>
+  </div>
+
+  <script>
+    let plants = [];
+    let logs = [];
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      document.getElementById('theme-btn').innerText = isDark ? '☀️' : '🌙';
+      localStorage.setItem('app-theme', isDark ? 'dark' : 'light');
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem('app-theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('theme-btn').innerText = '☀️';
+      }
+      loadData();
+      renderSchedule();
+      runCalculator();
+    };
+
+    function loadData() {
+      plants = JSON.parse(localStorage.getItem('plant_care_plants') || '[]');
+      logs = JSON.parse(localStorage.getItem('plant_care_logs') || '[]');
+    }
+
+    function saveData() {
+      localStorage.setItem('plant_care_plants', JSON.stringify(plants));
+      localStorage.setItem('plant_care_logs', JSON.stringify(logs));
+    }
+
+    function switchTab(tabId, title) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('tab-' + tabId).classList.add('active');
+      document.getElementById('page-title').innerText = title;
+
+      const navIndex = tabId === 'schedule' ? 0 : tabId === 'calculator' ? 1 : 2;
+      document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+
+      if (tabId === 'logs') renderLogs();
+    }
+
+    function toggleAddForm() {
+      const form = document.getElementById('add-plant-card');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function savePlant() {
+      const name = document.getElementById('plant-name').value.trim();
+      const type = document.getElementById('plant-type').value.trim() || 'General Fertilizer';
+      const interval = parseInt(document.getElementById('plant-interval').value, 10) || 14;
+
+      if (!name) return;
+
+      const newPlant = {
+        id: 'p_' + Date.now(),
+        name: name,
+        type: type,
+        interval: interval,
+        lastFertilized: new Date().toISOString()
+      };
+
+      plants.push(newPlant);
+      saveData();
+      renderSchedule();
+      
+      document.getElementById('plant-name').value = '';
+      document.getElementById('plant-type').value = '';
+      toggleAddForm();
+    }
+
+    function waterPlant(id) {
+      const plant = plants.find(p => p.id === id);
+      if (!plant) return;
+
+      const now = new Date().toISOString();
+      plant.lastFertilized = now;
+
+      logs.unshift({
+        plantName: plant.name,
+        type: plant.type,
+        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+      });
+
+      saveData();
+      renderSchedule();
+    }
+
+    function deletePlant(id) {
+      if (!confirm('Delete this plant profile?')) return;
+      plants = plants.filter(p => p.id !== id);
+      saveData();
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const container = document.getElementById('plant-list');
+      container.innerHTML = '';
+
+      if (plants.length === 0) {
+        container.innerHTML = '<div style="opacity:0.6; padding: 20px 0;">No plants registered yet. Tap "+ Add New Plant" above.</div>';
+        return;
+      }
+
+      const now = new Date();
+
+      plants.forEach(plant => {
+        const last = new Date(plant.lastFertilized);
+        const diffTime = Math.abs(now - last);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const daysLeft = plant.interval - diffDays;
+
+        let badgeClass = 'badge-good';
+        let badgeText = `${daysLeft} days left`;
+
+        if (daysLeft === 0) {
+          badgeClass = 'badge-due';
+          badgeText = 'Due Today';
+        } else if (daysLeft < 0) {
+          badgeClass = 'badge-overdue';
+          badgeText = `Overdue ${Math.abs(daysLeft)}d`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="plant-header">
+            <div>
+              <div class="plant-title">${plant.name}</div>
+              <div class="plant-type">${plant.type} • Every ${plant.interval} days</div>
+            </div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          <button class="btn btn-primary" onclick="waterPlant('${plant.id}')">Fertilized Today</button>
+          <button class="btn btn-secondary" style="margin-top: 6px; font-size: 11px; padding: 6px;" onclick="deletePlant('${plant.id}')">Delete</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function runCalculator() {
+      const vol = parseFloat(document.getElementById('calc-volume').value) || 0;
+      const ratio = parseFloat(document.getElementById('calc-ratio').value) || 0;
+      const unit = document.getElementById('calc-unit').value;
+
+      const full = vol * ratio;
+      const half = full / 2;
+      const quarter = full / 4;
+
+      document.getElementById('res-full').innerText = `${full.toFixed(2)} ${unit}`;
+      document.getElementById('res-half').innerText = `${half.toFixed(2)} ${unit}`;
+      document.getElementById('res-quarter').innerText = `${quarter.toFixed(2)} ${unit}`;
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('logs-list');
+      container.innerHTML = '';
+
+      if (logs.length === 0) {
+        container.innerHTML = '<div style="opacity:0.6; padding: 12px 0;">No fertilization history yet.</div>';
+        return;
+      }
+
+      logs.slice(0, 30).forEach(log => {
+        const item = document.createElement('div');
+        item.className = 'log-item';
+        item.innerHTML = `
+          <div><strong>${log.plantName}</strong> (${log.type})</div>
+          <div style="opacity: 0.7;">${log.date}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    /* iCloud JSON Export & Import Logic */
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ plants, logs }, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `plant_care_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported.plants && imported.logs) {
+            plants = imported.plants;
+            logs = imported.logs;
+            saveData();
+            renderSchedule();
+            alert('Data restored successfully!');
+          }
+        } catch (err) {
+          alert('Invalid backup JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+  </script>
+</body>
+</html>
