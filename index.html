@@ -603,8 +603,7 @@
         container.appendChild(card);
       });
     }
-
-    function runCalculator() {
+function runCalculator() {
       const vol = parseFloat(document.getElementById('calc-volume').value) || 0;
       const recipeKey = document.getElementById('calc-recipe').value;
       const recipe = recipeDb[recipeKey];
@@ -613,10 +612,22 @@
       let html = '';
       if (recipe && recipe.ingredients.length > 0) {
         recipe.ingredients.forEach(ing => {
-          const total = (ing.ratio * vol).toFixed(2);
+          const minTotal = (ing.min * vol).toFixed(2);
+          const maxTotal = (ing.max * vol).toFixed(2);
+          
+          let displayVal = "";
+          if (ing.min === ing.max) {
+            displayVal = `${minTotal} ${ing.unit}`;
+          } else {
+            displayVal = `${minTotal} – ${maxTotal} ${ing.unit}`;
+          }
+
+          // Format name to show (Optional) if flagged true
+          const labelName = ing.optional ? `${ing.name} <span style="font-size: 11px; opacity: 0.6;">(Optional)</span>` : ing.name;
+
           html += `<div class="calc-row">
-                     <span>${ing.name}:</span>
-                     <span class="calc-val">${total} ${ing.unit}</span>
+                     <span>${labelName}:</span>
+                     <span class="calc-val">${displayVal}</span>
                    </div>`;
         });
       } else {
