@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Plant Care & Fertilizer Tracker</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --bg-color: #f4f4f7;
@@ -45,7 +45,7 @@
     * { box-sizing: border-box; }
 
     body {
-      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
       padding: 20px 16px 80px 16px;
       max-width: 360px;
       margin: 0 auto;
@@ -175,6 +175,8 @@
       border: 1px solid var(--input-border);
       background-color: var(--input-bg);
       color: var(--text-color);
+      height: 32px;
+      -webkit-appearance: none;
     }
 
     .btn {
@@ -206,11 +208,39 @@
     }
 
     .input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
-    label { font-size: 12px; font-weight: 700; opacity: 0.8; }
-    input, select, textarea {
-      width: 100%; padding: 10px 12px; font-size: 15px; font-family: inherit;
-      border-radius: 8px; border: 1.5px solid var(--input-border);
-      background-color: var(--input-bg); color: var(--text-color); resize: vertical;
+    label { font-size: 12px; font-weight: 700; opacity: 0.8; display: block; margin-bottom: 4px; }
+    
+    /* iOS Input, Select, and Textarea Uniformity Fix */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      height: 44px;
+      padding: 0 12px;
+      font-size: 15px;
+      font-family: inherit;
+      border-radius: 8px;
+      border: 1.5px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      appearance: none;
+      line-height: normal;
+    }
+
+    textarea {
+      height: auto;
+      min-height: 90px;
+      padding: 10px 12px;
+      resize: vertical;
+    }
+
+    /* Keep calendar icon functional while controlling Safari sizing */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0.7;
     }
 
     .calc-result { background: var(--card-inner); border-radius: 12px; padding: 14px; margin-top: 14px; border: 1px solid var(--card-border); }
@@ -299,18 +329,18 @@
     <div id="plant-list"></div>
   </div>
 
-  <!-- TAB 2: CALCULATOR -->
-  <div id="tab-calculator" class="tab-content">
+  <!-- TAB 2: CALCUMontserratR -->
+  <div id="tab-calcuMontserratr" class="tab-content">
     <div class="card">
-      <div style="font-weight: 900; margin-bottom: 12px;">Mix Calculator</div>
+      <div style="font-weight: 900; margin-bottom: 12px;">Mix CalcuMontserratr</div>
       <div class="input-group">
         <div>
           <label>Water Volume (Liters)</label>
-          <input type="number" id="calc-volume" value="1.5" step="0.1" oninput="runCalculator()">
+          <input type="number" id="calc-volume" value="1.5" step="0.1" oninput="runCalcuMontserratr()">
         </div>
         <div>
           <label>Select Fertilizer Recipe</label>
-          <select id="calc-recipe" onchange="runCalculator()"></select>
+          <select id="calc-recipe" onchange="runCalcuMontserratr()"></select>
         </div>
       </div>
       <div class="calc-result" id="recipe-output"></div>
@@ -340,8 +370,8 @@
     <button class="nav-item active" onclick="switchTab('schedule', 'Fertilizer Schedule')">
       <span class="nav-icon">🪴</span><span>Schedule</span>
     </button>
-    <button class="nav-item" onclick="switchTab('calculator', 'Mix Calculator')">
-      <span class="nav-icon">🧪</span><span>Calculator</span>
+    <button class="nav-item" onclick="switchTab('calcuMontserratr', 'Mix CalcuMontserratr')">
+      <span class="nav-icon">🧪</span><span>CalcuMontserratr</span>
     </button>
     <button class="nav-item" onclick="switchTab('logs', 'Logs & Backup')">
       <span class="nav-icon">📋</span><span>Logs</span>
@@ -383,7 +413,7 @@
       populateDropdowns();
       loadData();
       renderSchedule();
-      runCalculator();
+      runCalcuMontserratr();
     };
 
     function populateDropdowns() {
@@ -415,7 +445,7 @@
       document.getElementById('tab-' + tabId).classList.add('active');
       document.getElementById('page-title').innerText = title;
 
-      const navIndex = tabId === 'schedule' ? 0 : tabId === 'calculator' ? 1 : 2;
+      const navIndex = tabId === 'schedule' ? 0 : tabId === 'calcuMontserratr' ? 1 : 2;
       document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
 
       if (tabId === 'logs') renderLogs();
@@ -603,7 +633,8 @@
         container.appendChild(card);
       });
     }
-function runCalculator() {
+
+    function runCalcuMontserratr() {
       const vol = parseFloat(document.getElementById('calc-volume').value) || 0;
       const recipeKey = document.getElementById('calc-recipe').value;
       const recipe = recipeDb[recipeKey];
@@ -622,7 +653,6 @@ function runCalculator() {
             displayVal = `${minTotal} – ${maxTotal} ${ing.unit}`;
           }
 
-          // Format name to show (Optional) if flagged true
           const labelName = ing.optional ? `${ing.name} <span style="font-size: 11px; opacity: 0.6;">(Optional)</span>` : ing.name;
 
           html += `<div class="calc-row">
@@ -656,14 +686,23 @@ function runCalculator() {
       });
     }
 
+    // iOS Safari Compatible JSON Export
     function exportJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ plants, logs }, null, 2));
+      const jsonString = JSON.stringify({ plants, logs }, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      
       const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `plant_care_backup_${new Date().toISOString().slice(0,10)}.json`);
+      downloadAnchor.href = url;
+      downloadAnchor.download = `plant_care_backup_${new Date().toISOString().slice(0,10)}.json`;
+      
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
-      downloadAnchor.remove();
+      
+      setTimeout(() => {
+        document.body.removeChild(downloadAnchor);
+        URL.revokeObjectURL(url);
+      }, 100);
     }
 
     function importJSON(event) {
